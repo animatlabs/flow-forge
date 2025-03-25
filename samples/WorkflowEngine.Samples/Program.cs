@@ -13,26 +13,23 @@ public class Program
 
             // Basic Workflows
             Console.WriteLine("1. Basic Workflow");
+            Console.WriteLine("2. Conditional Workflow");
+            Console.WriteLine("3. Parallel Workflow");
+            Console.WriteLine("4. Custom Step Workflow");
 
             // Retry Mechanisms
-            Console.WriteLine("2. Retry Workflow");
-            Console.WriteLine("3. Retry Strategies Workflow");
+            Console.WriteLine("5. Retry Workflow");
+            Console.WriteLine("6. Retry Strategies Workflow");
 
-            // Middleware and Customization
-            Console.WriteLine("4. Middleware Workflow");
-            Console.WriteLine("5. Custom Step Workflow");
+            // Middleware and Event Handlers
+            Console.WriteLine("7. Middleware Workflow");
+            Console.WriteLine("8. Event Handlers Workflow");
 
-            // Event Handling
-            Console.WriteLine("6. Event Handlers Workflow");
-
-            // Workflow Structures
-            Console.WriteLine("7. Action Step Workflow");
-            Console.WriteLine("8. Parallel Workflow");
+            // Nested Workflows
             Console.WriteLine("9. Nested Workflow");
-            Console.WriteLine("10. Conditional Workflow");
 
             // Exit
-            Console.WriteLine("11. Exit");
+            Console.WriteLine("10. Exit");
 
             Console.Write("Enter your choice: ");
             var choice = Console.ReadLine();
@@ -43,33 +40,30 @@ public class Program
                     await BasicWorkflow.Run();
                     break;
                 case "2":
-                    await RetryWorkflow.Run();
+                    await ConditionalWorkflow.Run();
                     break;
                 case "3":
-                    await RetryStrategiesWorkflow.Run();
+                    await ParallelWorkflow.Run();
                     break;
                 case "4":
-                    await MiddlewareWorkflow.Run();
-                    break;
-                case "5":
                     await CustomStepWorkflow.Run();
                     break;
+                case "5":
+                    await RetryWorkflow.Run();
+                    break;
                 case "6":
-                    await EventHandlersWorkflow.Run();
+                    await RetryStrategiesWorkflow.Run();
                     break;
                 case "7":
-                    await ActionStepWorkflow.Run();
+                    await MiddlewareWorkflow.Run();
                     break;
                 case "8":
-                    await ParallelWorkflow.Run();
+                    await EventHandlersWorkflow.Run();
                     break;
                 case "9":
                     await NestedWorkflow.Run();
                     break;
                 case "10":
-                    await ConditionalWorkflow.Run();
-                    break;
-                case "11":
                     Console.WriteLine("Exiting...");
                     return;
                 default:

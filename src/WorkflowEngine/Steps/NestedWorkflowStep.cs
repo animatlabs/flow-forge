@@ -35,8 +35,7 @@ namespace WorkflowEngine.Steps
                     { "ParentWorkflowId", context.Workflow.WorkflowId },
                     { "ParentWorkflowName", context.Workflow.Name },
                     { "ParentStepName", Name },
-                    { "ParentStepId", StepId },
-                    { "ParentStepName", Name }
+                    { "ParentStepId", StepId }
                 }))
             {
                 await workflowRunner.ExecuteAsync(nestedWorkflow, context, cancellationToken).ConfigureAwait(false);
