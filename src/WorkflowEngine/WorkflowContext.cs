@@ -11,24 +11,24 @@ namespace WorkflowEngine
     public class WorkflowContext : IWorkflowContext
     {
         private readonly ConcurrentDictionary<string, object> data;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider for dependency injection.</param>
         /// <param name="workflow">The workflow instance.</param>
         /// <param name="correlationId">The correlation identifier for the workflow context.</param>
+        /// <param name="serviceProvider">The service provider for dependency injection.</param>
         /// <param name="workflowStepCompensationManager">The workflow step compensation manager.</param>
         public WorkflowContext(
-            IServiceProvider serviceProvider,
             IWorkflow workflow,
             string correlationId = null,
+            IServiceProvider serviceProvider = null,
             IWorkflowStepCompensationManager workflowStepCompensationManager = null)
         {
             Workflow = workflow;
-            ServiceProvider = serviceProvider;
             data = new ConcurrentDictionary<string, object>();
             CorrelationId = correlationId ?? Guid.NewGuid().ToString();
+            ServiceProvider = serviceProvider;
             WorkflowStepCompensationManager = workflowStepCompensationManager ?? new WorkflowStepCompensationManager();
         }
 

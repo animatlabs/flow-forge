@@ -8,6 +8,8 @@ namespace WorkflowEngine
     /// </summary>
     internal sealed class Workflow : IWorkflow
     {
+        private bool isDisposed; // Safeguard against cyclic disposal
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Workflow"/> class.
         /// </summary>
@@ -47,6 +49,9 @@ namespace WorkflowEngine
         /// <inheritdoc />
         public void Dispose()
         {
+            if (isDisposed) return; // Prevent multiple or cyclic disposal
+            isDisposed = true;
+
             foreach (var step in Steps)
             {
                 step.Dispose();

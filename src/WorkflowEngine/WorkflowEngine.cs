@@ -12,7 +12,7 @@ namespace WorkflowEngine
     /// <summary>
     /// Executes workflows with compensation, middleware, and throttling
     /// </summary>
-    public sealed class WorkflowRunner
+    public sealed class WorkflowEngine : IDisposable
     {
         private readonly IEnumerable<IWorkflowStepMiddleware> middleware;
         private readonly WorkflowSettings settings;
@@ -20,16 +20,17 @@ namespace WorkflowEngine
         private readonly IRetryStrategy compensationRetryStrategy;
         private readonly ISystemClock systemClock;
         private readonly SemaphoreSlim semaphore;
+        private bool isDisposed; // Safeguard against cyclic disposal
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowRunner"/> class
+        /// Initializes a new instance of the <see cref="WorkflowEngine"/> class
         /// </summary>
         /// <param name="middleware">The middleware to be applied to the workflow steps.</param>
         /// <param name="settings">The settings for the workflow execution (optional).</param>
         /// <param name="logger">The logger for logging workflow execution details (optional).</param>
         /// <param name="compensationRetryStrategy">The retry strategy for compensations (optional).</param>
         /// <param name="systemClock">The system clock for getting the current time (optional).</param>
-        public WorkflowRunner(
+        public WorkflowEngine(
             IEnumerable<IWorkflowStepMiddleware> middleware,
             WorkflowSettings settings = null,
             ILogger logger = null,
@@ -114,6 +115,7 @@ namespace WorkflowEngine
             finally
             {
                 semaphore.Release(); // Release the semaphore
+                workflow.Dispose(); // Dispose of the workflow after execution
             }
         }
 
@@ -202,6 +204,16 @@ namespace WorkflowEngine
             {
                 throw new WorkflowException("One or more compensations failed", new AggregateException(exceptions));
             }
+        }
+
+        /// <inheritdoc/>
+
+        public void Dispose()
+        {
+            if (isDisposed) return; // Prevent multiple or cyclic disposal
+            isDisposed = true;
+
+            semaphore.Dispose();
         }
     }
 }

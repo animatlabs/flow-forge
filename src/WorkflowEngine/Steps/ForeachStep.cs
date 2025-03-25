@@ -16,7 +16,7 @@ namespace WorkflowEngine.Steps
         private readonly ConcurrentBag<IWorkflowStep> parallelSteps;
         private readonly SemaphoreSlim throttler;
         private readonly bool useThrottler;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ForeachStep"/> class.
         /// </summary>
@@ -108,9 +108,9 @@ namespace WorkflowEngine.Steps
         }
 
         /// <inheritdoc/>
-        public override void Dispose()
+        protected override void DisposeCore()
         {
-            foreach (var step in parallelSteps)
+            foreach (var step in parallelSteps.ToArray()) // Ensure thread safety
             {
                 step.Dispose();
             }

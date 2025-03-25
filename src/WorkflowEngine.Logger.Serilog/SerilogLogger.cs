@@ -211,6 +211,11 @@ namespace WorkflowEngine.Logger.Serilog
 
         private IDisposable PushProperties(IDictionary<string, string> properties)
         {
+            if (properties == null)
+            {
+                return LogContext.Push();
+            }
+
             var enrichers = new List<ILogEventEnricher>();
             foreach (var property in properties)
             {

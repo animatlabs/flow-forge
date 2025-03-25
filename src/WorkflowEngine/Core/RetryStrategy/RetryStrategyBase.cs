@@ -42,13 +42,14 @@ namespace WorkflowEngine.Core.RetryStrategy
                 {
                     retryCount++;
 
+                    logger.LogWarning($"Retry {retryCount} failed.", ex);
                     if (!await ShouldRetryAsync(retryCount, cancellationToken))
                     {
                         throw;
                     }
 
                     var delay = GetRetryDelay(retryCount);
-                    logger?.LogWarning($"Retry {retryCount} failed. Retrying in {delay.TotalMilliseconds}ms.", ex);
+                    logger.LogInformation($"Retry {retryCount} failed. Retrying in {delay.TotalMilliseconds}ms. Exception: {ex.Message}", ex);
                     await Task.Delay(delay, cancellationToken);
                 }
             }

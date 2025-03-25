@@ -14,7 +14,7 @@ namespace WorkflowEngine.Steps
         private readonly IWorkflowStep step;
         private readonly IRetryStrategy retryStrategy;
         private readonly int maxRetries;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RetryStep"/> class.
         /// </summary>
@@ -57,8 +57,9 @@ namespace WorkflowEngine.Steps
                         await step.ExecuteAsync(context, cancellationToken);
                         return;
                     }
-                    catch (Exception) when (retryCount < maxRetries - 1)
+                    catch (Exception ex) when (retryCount < maxRetries - 1)
                     {
+                        logger.LogWarning($"Retry {retryCount} failed for step {step.StepId}: {ex.Message}");
                         if (!await retryStrategy.ShouldRetryAsync(retryCount, cancellationToken))
                         {
                             break;
@@ -89,10 +90,7 @@ namespace WorkflowEngine.Steps
         }
 
         /// <inheritdoc/>
-        /// <summary>
-        /// Releases resources used by the RetryStep.
-        /// </summary>
-        public override void Dispose()
+        protected override void DisposeCore()
         {
             step.Dispose();
         }

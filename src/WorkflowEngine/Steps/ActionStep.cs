@@ -12,7 +12,7 @@ namespace WorkflowEngine.Steps
     {
         private readonly Func<IWorkflowContext, CancellationToken, Task> action;
         private readonly Func<IWorkflowContext, CancellationToken, Task> compensation;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionStep"/> class.
         /// </summary>

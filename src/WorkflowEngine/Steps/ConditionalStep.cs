@@ -16,7 +16,7 @@ namespace WorkflowEngine.Steps
         private readonly IWorkflowStep falseStep;
 
         private IWorkflowStep step;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ConditionalStep"/> class.
         /// </summary>
@@ -64,6 +64,13 @@ namespace WorkflowEngine.Steps
                     await step.CompensateAsync(context, cancellationToken).ConfigureAwait(true);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void DisposeCore()
+        {
+           trueStep.Dispose();
+            falseStep.Dispose();
         }
     }
 }
