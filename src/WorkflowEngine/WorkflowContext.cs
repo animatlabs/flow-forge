@@ -11,7 +11,7 @@ namespace WorkflowEngine
     public class WorkflowContext : IWorkflowContext
     {
         private readonly ConcurrentDictionary<string, object> data;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowContext"/> class.
         /// </summary>

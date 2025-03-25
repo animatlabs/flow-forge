@@ -12,7 +12,7 @@ namespace WorkflowEngine.Steps
     {
         private readonly IWorkflow nestedWorkflow;
         private readonly WorkflowEngine workflowRunner;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NestedWorkflowStep"/> class.
         /// </summary>

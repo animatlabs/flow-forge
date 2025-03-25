@@ -1,4 +1,4 @@
-using System;
+using WorkflowEngine.Samples.Workflows;
 
 namespace WorkflowEngine.Samples;
 
@@ -39,33 +39,43 @@ public class Program
                 case "1":
                     await BasicWorkflow.Run();
                     break;
+
                 case "2":
                     await ConditionalWorkflow.Run();
                     break;
+
                 case "3":
                     await ParallelWorkflow.Run();
                     break;
+
                 case "4":
                     await CustomStepWorkflow.Run();
                     break;
+
                 case "5":
                     await RetryWorkflow.Run();
                     break;
+
                 case "6":
                     await RetryStrategiesWorkflow.Run();
                     break;
+
                 case "7":
                     await MiddlewareWorkflow.Run();
                     break;
+
                 case "8":
                     await EventHandlersWorkflow.Run();
                     break;
+
                 case "9":
                     await NestedWorkflow.Run();
                     break;
+
                 case "10":
                     Console.WriteLine("Exiting...");
                     return;
+
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;

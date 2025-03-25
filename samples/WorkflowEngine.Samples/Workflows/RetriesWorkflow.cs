@@ -1,7 +1,7 @@
 using WorkflowEngine.Middlewares;
 using WorkflowEngine.Steps;
 
-namespace WorkflowEngine.Samples;
+namespace WorkflowEngine.Samples.Workflows;
 
 public class WorkflowWithRetries
 {

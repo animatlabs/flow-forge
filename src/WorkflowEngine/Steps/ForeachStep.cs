@@ -16,7 +16,7 @@ namespace WorkflowEngine.Steps
         private readonly ConcurrentBag<IWorkflowStep> parallelSteps;
         private readonly SemaphoreSlim throttler;
         private readonly bool useThrottler;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ForeachStep"/> class.
         /// </summary>

@@ -1,0 +1,86 @@
+name: Publish NuGet Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup .NET environment
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x' # Adjust to your project's .NET version
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build the solution
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      # Extract version for WorkflowEngine
+      - name: Extract version for WorkflowEngine
+        id: extract-version-workflowengine
+        run: |
+          VERSION=$(dotnet msbuild ./src/WorkflowEngine/WorkflowEngine.csproj /t:GetAssemblyVersion /nologo /v:q)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      # Extract version for WorkflowEngine.Logger.Serilog
+      - name: Extract version for WorkflowEngine.Logger.Serilog
+        id: extract-version-serilog
+        run: |
+          VERSION=$(dotnet msbuild ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj /t:GetAssemblyVersion /nologo /v:q)
+          echo "VERSION_SERILOG=$VERSION" >> $GITHUB_ENV
+
+      # Extract version for WorkflowEngine.Middlewares.OpenTelemetry
+      - name: Extract version for WorkflowEngine.Middlewares.OpenTelemetry
+        id: extract-version-opentelemetry
+        run: |
+          VERSION=$(dotnet msbuild ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj /t:GetAssemblyVersion /nologo /v:q)
+          echo "VERSION_OPENTELEMETRY=$VERSION" >> $GITHUB_ENV
+
+      # Pack and publish WorkflowEngine
+      - name: Pack and publish WorkflowEngine
+        run: |
+          PACKAGE_NAME="WorkflowEngine"
+          PACKAGE_VERSION=$VERSION
+          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
+            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
+          else
+            dotnet pack ./src/WorkflowEngine/WorkflowEngine.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          fi
+
+      # Pack and publish WorkflowEngine.Logger.Serilog
+      - name: Pack and publish WorkflowEngine.Logger.Serilog
+        run: |
+          PACKAGE_NAME="WorkflowEngine.Logger.Serilog"
+          PACKAGE_VERSION=$VERSION_SERILOG
+          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
+            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
+          else
+            dotnet pack ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          fi
+
+      # Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
+      - name: Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
+        run: |
+          PACKAGE_NAME="WorkflowEngine.Middlewares.OpenTelemetry"
+          PACKAGE_VERSION=$VERSION_OPENTELEMETRY
+          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
+            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
+          else
+            dotnet pack ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          fi

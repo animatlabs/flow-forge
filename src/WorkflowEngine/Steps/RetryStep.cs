@@ -14,7 +14,7 @@ namespace WorkflowEngine.Steps
         private readonly IWorkflowStep step;
         private readonly IRetryStrategy retryStrategy;
         private readonly int maxRetries;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RetryStep"/> class.
         /// </summary>

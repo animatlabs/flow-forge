@@ -1,7 +1,7 @@
 using Serilog;
 using WorkflowEngine.Logger.Serilog;
 
-namespace WorkflowEngine.Samples;
+namespace WorkflowEngine.Samples.Workflows;
 
 public class CustomStepWorkflow
 {
