@@ -53,6 +53,7 @@ jobs:
 
       # Pack and publish WorkflowEngine
       - name: Pack and publish WorkflowEngine
+        shell: bash
         run: |
           PACKAGE_NAME="WorkflowEngine"
           PACKAGE_VERSION=$VERSION
@@ -65,6 +66,7 @@ jobs:
 
       # Pack and publish WorkflowEngine.Logger.Serilog
       - name: Pack and publish WorkflowEngine.Logger.Serilog
+        shell: bash
         run: |
           PACKAGE_NAME="WorkflowEngine.Logger.Serilog"
           PACKAGE_VERSION=$VERSION_SERILOG
@@ -77,6 +79,7 @@ jobs:
 
       # Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
       - name: Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
+        shell: bash
         run: |
           PACKAGE_NAME="WorkflowEngine.Middlewares.OpenTelemetry"
           PACKAGE_VERSION=$VERSION_OPENTELEMETRY
