@@ -41,21 +41,15 @@ jobs:
 
       # Use input versions for WorkflowEngine
       - name: Set version for WorkflowEngine
-        run: |
-          echo "VERSION=${{ github.event.inputs.workflowengine_version }}" >> $GITHUB_ENV
-          export VERSION=${{ github.event.inputs.workflowengine_version }}
+        run: echo "VERSION=${{ github.event.inputs.workflowengine_version }}" >> $GITHUB_ENV
 
       # Use input versions for WorkflowEngine.Logger.Serilog
       - name: Set version for WorkflowEngine.Logger.Serilog
-        run: |
-          echo "VERSION_SERILOG=${{ github.event.inputs.serilog_version }}" >> $GITHUB_ENV
-          export VERSION_SERILOG=${{ github.event.inputs.serilog_version }}
+        run: echo "VERSION_SERILOG=${{ github.event.inputs.serilog_version }}" >> $GITHUB_ENV
 
       # Use input versions for WorkflowEngine.Middlewares.OpenTelemetry
       - name: Set version for WorkflowEngine.Middlewares.OpenTelemetry
-        run: |
-          echo "VERSION_OPENTELEMETRY=${{ github.event.inputs.opentelemetry_version }}" >> $GITHUB_ENV
-          export VERSION_OPENTELEMETRY=${{ github.event.inputs.opentelemetry_version }}
+        run: echo "VERSION_OPENTELEMETRY=${{ github.event.inputs.opentelemetry_version }}" >> $GITHUB_ENV
 
       # Pack and publish WorkflowEngine
       - name: Pack and publish WorkflowEngine
