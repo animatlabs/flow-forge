@@ -61,7 +61,7 @@ jobs:
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
-            dotnet pack ./src/WorkflowEngine/WorkflowEngine.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet pack ./src/WorkflowEngine/WorkflowEngine.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
             dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           fi
 
@@ -75,7 +75,7 @@ jobs:
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
-            dotnet pack ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet pack ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
             dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           fi
 
@@ -89,6 +89,6 @@ jobs:
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
-            dotnet pack ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+            dotnet pack ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
             dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           fi
