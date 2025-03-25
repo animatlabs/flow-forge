@@ -58,12 +58,8 @@ jobs:
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine"
           PACKAGE_VERSION=${{ github.event.inputs.workflowengine_version }}
-          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
-            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
-          else
-            dotnet pack ./src/WorkflowEngine/WorkflowEngine.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
-            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-          fi
+          dotnet pack ./src/WorkflowEngine/WorkflowEngine.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+          dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
       # Pack and publish WorkflowEngine.Logger.Serilog
       - name: Pack and publish WorkflowEngine.Logger.Serilog
@@ -72,12 +68,8 @@ jobs:
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Logger.Serilog"
           PACKAGE_VERSION=${{ github.event.inputs.serilog_version }}
-          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
-            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
-          else
-            dotnet pack ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
-            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-          fi
+          dotnet pack ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+          dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
       # Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
       - name: Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
@@ -86,9 +78,5 @@ jobs:
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Middlewares.OpenTelemetry"
           PACKAGE_VERSION=${{ github.event.inputs.opentelemetry_version }}
-          if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
-            echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
-          else
-            dotnet pack ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj --configuration Release --no-build --output ./nupkgs /p:Version="$PACKAGE_VERSION"
-            dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-          fi
+          dotnet pack ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj --configuration Release --no-build --output ./nupkgs /p:Version=$PACKAGE_VERSION
+          dotnet nuget push ./nupkgs/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
