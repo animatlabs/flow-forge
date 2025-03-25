@@ -57,7 +57,7 @@ jobs:
         run: |
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine"
-          PACKAGE_VERSION=$VERSION
+          PACKAGE_VERSION=${{ github.event.inputs.workflowengine_version }}
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
@@ -71,7 +71,7 @@ jobs:
         run: |
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Logger.Serilog"
-          PACKAGE_VERSION=$VERSION_SERILOG
+          PACKAGE_VERSION=${{ github.event.inputs.serilog_version }}
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
@@ -85,7 +85,7 @@ jobs:
         run: |
           source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Middlewares.OpenTelemetry"
-          PACKAGE_VERSION=$VERSION_OPENTELEMETRY
+          PACKAGE_VERSION=${{ github.event.inputs.opentelemetry_version }}
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
             echo "Package $PACKAGE_NAME version $PACKAGE_VERSION already exists on NuGet."
           else
