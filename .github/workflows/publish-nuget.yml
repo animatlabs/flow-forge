@@ -55,6 +55,7 @@ jobs:
       - name: Pack and publish WorkflowEngine
         shell: bash
         run: |
+          source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine"
           PACKAGE_VERSION=$VERSION
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
@@ -68,6 +69,7 @@ jobs:
       - name: Pack and publish WorkflowEngine.Logger.Serilog
         shell: bash
         run: |
+          source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Logger.Serilog"
           PACKAGE_VERSION=$VERSION_SERILOG
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
@@ -81,6 +83,7 @@ jobs:
       - name: Pack and publish WorkflowEngine.Middlewares.OpenTelemetry
         shell: bash
         run: |
+          source $GITHUB_ENV
           PACKAGE_NAME="WorkflowEngine.Middlewares.OpenTelemetry"
           PACKAGE_VERSION=$VERSION_OPENTELEMETRY
           if curl --silent --fail https://api.nuget.org/v3-flatcontainer/$PACKAGE_NAME/$PACKAGE_VERSION/$PACKAGE_NAME.$PACKAGE_VERSION.nupkg; then
