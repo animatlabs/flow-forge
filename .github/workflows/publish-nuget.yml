@@ -1,9 +1,20 @@
 name: Publish NuGet Packages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      workflowengine_version:
+        description: "Version for WorkflowEngine"
+        required: true
+        default: "1.0.0"
+      serilog_version:
+        description: "Version for WorkflowEngine.Logger.Serilog"
+        required: true
+        default: "1.0.0"
+      opentelemetry_version:
+        description: "Version for WorkflowEngine.Middlewares.OpenTelemetry"
+        required: true
+        default: "1.0.0"
 
 jobs:
   build-and-publish:
@@ -28,26 +39,17 @@ jobs:
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      # Extract version for WorkflowEngine
-      - name: Extract version for WorkflowEngine
-        id: extract-version-workflowengine
-        run: |
-          VERSION=$(dotnet msbuild ./src/WorkflowEngine/WorkflowEngine.csproj /t:GetAssemblyVersion /nologo /v:q)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      # Use input versions for WorkflowEngine
+      - name: Set version for WorkflowEngine
+        run: echo "VERSION=${{ github.event.inputs.workflowengine_version }}" >> $GITHUB_ENV
 
-      # Extract version for WorkflowEngine.Logger.Serilog
-      - name: Extract version for WorkflowEngine.Logger.Serilog
-        id: extract-version-serilog
-        run: |
-          VERSION=$(dotnet msbuild ./src/WorkflowEngine.Logger.Serilog/WorkflowEngine.Logger.Serilog.csproj /t:GetAssemblyVersion /nologo /v:q)
-          echo "VERSION_SERILOG=$VERSION" >> $GITHUB_ENV
+      # Use input versions for WorkflowEngine.Logger.Serilog
+      - name: Set version for WorkflowEngine.Logger.Serilog
+        run: echo "VERSION_SERILOG=${{ github.event.inputs.serilog_version }}" >> $GITHUB_ENV
 
-      # Extract version for WorkflowEngine.Middlewares.OpenTelemetry
-      - name: Extract version for WorkflowEngine.Middlewares.OpenTelemetry
-        id: extract-version-opentelemetry
-        run: |
-          VERSION=$(dotnet msbuild ./src/WorkflowEngine.Middlewares.OpenTelemetry/WorkflowEngine.Middlewares.OpenTelemetry.csproj /t:GetAssemblyVersion /nologo /v:q)
-          echo "VERSION_OPENTELEMETRY=$VERSION" >> $GITHUB_ENV
+      # Use input versions for WorkflowEngine.Middlewares.OpenTelemetry
+      - name: Set version for WorkflowEngine.Middlewares.OpenTelemetry
+        run: echo "VERSION_OPENTELEMETRY=${{ github.event.inputs.opentelemetry_version }}" >> $GITHUB_ENV
 
       # Pack and publish WorkflowEngine
       - name: Pack and publish WorkflowEngine
