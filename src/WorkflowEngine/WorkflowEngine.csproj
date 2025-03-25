@@ -5,17 +5,21 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\WorkflowEngine.xml</DocumentationFile>
 
         <Authors>Animesh Agarwal</Authors>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
         <AssemblyName>WorkflowEngine</AssemblyName>
         <AssemblyTitle>Workflow Engine</AssemblyTitle>
         <Copyright>© 2023 AnimatLabs. All rights reserved.</Copyright>
-        <Description>Workflow Engine is a .NET library for creating and executing workflows. It provides a flexible and extensible framework for defining, managing, and executing complex workflows in .NET applications. Suitable for automation, business process management, and integration scenarios.</Description>
+        <Description>
+            Workflow Engine is a .NET library for creating and executing workflows. It provides a flexible and extensible framework for defining, managing, and executing complex workflows in .NET applications. 
+            Suitable for automation, business process management, and integration scenarios.
+        </Description>
 
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>workflow, automation, integration, business process management, BPL, .NET, library, workflow automation, process automation, workflow engine, business automation, .NET Standard, .NET library</PackageTags>
+        <PackageTags>workflow, automation, integration, business process management, .NET library, workflow engine</PackageTags>
     </PropertyGroup>
     
     <ItemGroup>

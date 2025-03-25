@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using WorkflowEngine.Core;
 
 namespace WorkflowEngine.Steps
 {
@@ -19,11 +18,10 @@ namespace WorkflowEngine.Steps
         /// </summary>
         /// <param name="nestedWorkflow">The nested workflow to execute.</param>
         /// <param name="workflowRunner">The workflow runner to use for execution.</param>
-        /// <param name="logger">The logger instance to use for logging.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="nestedWorkflow"/> or <paramref name="workflowRunner"/> is null.
         /// </exception>
-        public NestedWorkflowStep(IWorkflow nestedWorkflow, WorkflowRunner workflowRunner, ILogger logger = null)
+        public NestedWorkflowStep(IWorkflow nestedWorkflow, WorkflowRunner workflowRunner)
 
         {
             this.nestedWorkflow = nestedWorkflow ?? throw new ArgumentNullException(nameof(nestedWorkflow));

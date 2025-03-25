@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace WorkflowEngine
 {
     /// <summary>
-    /// Builds workflows using a fluent API.
+    /// Provides a fluent API for building workflows.
     /// </summary>
     public class WorkflowBuilder
     {
@@ -13,9 +13,9 @@ namespace WorkflowEngine
         private readonly List<IWorkflowStep> steps = new List<IWorkflowStep>();
 
         /// <summary>
-        /// Sets the Id of the workflow.
+        /// Sets the unique identifier for the workflow.
         /// </summary>
-        /// <param name="id">The ID of the workflow.</param>
+        /// <param name="id">The unique identifier for the workflow.</param>
         /// <returns>The current instance of the <see cref="WorkflowBuilder"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="id"/> is default.</exception>
         public WorkflowBuilder WithId(Guid id)
@@ -58,7 +58,7 @@ namespace WorkflowEngine
         }
 
         /// <summary>
-        /// Builds the workflow engine with the configured steps.
+        /// Builds the workflow with the configured steps.
         /// </summary>
         /// <returns>A new instance of the <see cref="Workflow"/>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when no steps have been added to the builder.</exception>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace WorkflowEngine
+namespace WorkflowEngine.Core
 {
     /// <summary>
     /// Manages the compensation of workflow steps.
@@ -18,10 +18,12 @@ namespace WorkflowEngine
             compensatedWorkflowSteps = new ConcurrentDictionary<string, byte>();
         }
 
-        /// <inheritdoc />
-        public void MarkCompensated(Guid workflowId, Guid stepId) => compensatedWorkflowSteps.TryAdd($"{workflowId}:{stepId}", 0);
+        private static string GetKey(Guid workflowId, Guid stepId) => $"{workflowId}:{stepId}";
 
         /// <inheritdoc />
-        public bool IsCompensated(Guid workflowId, Guid stepId) => compensatedWorkflowSteps.ContainsKey($"{workflowId}:{stepId}");
+        public void MarkCompensated(Guid workflowId, Guid stepId) => compensatedWorkflowSteps.TryAdd(GetKey(workflowId, stepId), 0);
+
+        /// <inheritdoc />
+        public bool IsCompensated(Guid workflowId, Guid stepId) => compensatedWorkflowSteps.ContainsKey(GetKey(workflowId, stepId));
     }
 }

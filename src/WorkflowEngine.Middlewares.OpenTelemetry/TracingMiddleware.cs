@@ -8,6 +8,10 @@ using WorkflowEngine.Middlewares.OpenTelemetry;
 /// <summary>
 /// Middleware for tracing workflow steps using OpenTelemetry.
 /// </summary>
+/// <remarks>
+/// This middleware creates a tracing activity for each workflow step execution
+/// and attaches relevant metadata such as workflow and step identifiers.
+/// </remarks>
 public class TracingMiddleware : IWorkflowStepMiddleware
 {
     private readonly Tracer tracer;

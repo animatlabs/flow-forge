@@ -7,7 +7,7 @@ using WorkflowEngine.Core;
 namespace WorkflowEngine.Steps
 {
     /// <summary>
-    /// Retries a step a specified number of times before failing.
+    /// Retries a workflow step a specified number of times using a retry strategy.
     /// </summary>
     public sealed class RetryStep : WorkflowStep
     {
@@ -33,6 +33,12 @@ namespace WorkflowEngine.Steps
         }
 
         /// <inheritdoc/>
+        /// <summary>
+        /// Executes the workflow step with retry logic.
+        /// </summary>
+        /// <param name="context">The workflow context.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the step fails after the maximum retries.</exception>
         protected override async Task ExecuteCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             for (int retryCount = 0; retryCount < maxRetries; retryCount++)
@@ -64,6 +70,11 @@ namespace WorkflowEngine.Steps
         }
 
         /// <inheritdoc/>
+        /// <summary>
+        /// Compensates for the actions of the workflow step.
+        /// </summary>
+        /// <param name="context">The workflow context.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         protected override async Task CompensateCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             using (_ = logger.BeginScope(new Dictionary<string, object> {
@@ -78,6 +89,9 @@ namespace WorkflowEngine.Steps
         }
 
         /// <inheritdoc/>
+        /// <summary>
+        /// Releases resources used by the RetryStep.
+        /// </summary>
         public override void Dispose()
         {
             step.Dispose();

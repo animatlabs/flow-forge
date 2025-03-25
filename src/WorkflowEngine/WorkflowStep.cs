@@ -6,7 +6,7 @@ using WorkflowEngine.Core;
 namespace WorkflowEngine
 {
     /// <summary>
-    /// Base class for workflow steps with default compensation logic
+    /// Represents a base class for workflow steps with default execution and compensation logic.
     /// </summary>
     public abstract class WorkflowStep : IWorkflowStep
     {

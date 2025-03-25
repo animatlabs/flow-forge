@@ -9,9 +9,9 @@ using WorkflowEngine.Core;
 namespace WorkflowEngine.Steps
 {
     /// <summary>
-    /// Represents a step that can execute multiple workflow steps in parallel, if so configured.
+    /// Represents a step that executes multiple workflow steps in parallel.
     /// </summary>
-    public sealed class ForeachStep : WorkflowStep
+    public sealed class ForeachStep : WorkflowStep, IDisposable
     {
         private readonly ConcurrentBag<IWorkflowStep> parallelSteps;
         private readonly SemaphoreSlim throttler;

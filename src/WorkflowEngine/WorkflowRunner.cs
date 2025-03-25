@@ -12,23 +12,14 @@ namespace WorkflowEngine
     /// <summary>
     /// Executes workflows with compensation, middleware, and throttling
     /// </summary>
-    public sealed class WorkflowRunner : ICloneable
+    public sealed class WorkflowRunner
     {
-        private readonly List<IWorkflowStepMiddleware> middleware;
+        private readonly IEnumerable<IWorkflowStepMiddleware> middleware;
         private readonly WorkflowSettings settings;
         private readonly ILogger logger;
         private readonly IRetryStrategy compensationRetryStrategy;
         private readonly ISystemClock systemClock;
         private readonly SemaphoreSlim semaphore;
-
-        /// <inheritdoc />
-        public event EventHandler<StepExecutingEventArgs> StepExecuting;
-
-        /// <inheritdoc />
-        public event EventHandler<StepExecutedEventArgs> StepExecuted;
-
-        /// <inheritdoc />
-        public event EventHandler<CompensationFailedEventArgs> CompensationFailed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowRunner"/> class
@@ -46,7 +37,7 @@ namespace WorkflowEngine
             ISystemClock systemClock = null
         )
         {
-            this.middleware = new List<IWorkflowStepMiddleware>(middleware);
+            this.middleware = middleware ?? Array.Empty<IWorkflowStepMiddleware>();
             this.settings = settings ?? new WorkflowSettings();
             this.logger = logger ?? new NullLogger();
             this.compensationRetryStrategy = compensationRetryStrategy ?? new FixedIntervalRetryStrategy(TimeSpan.FromMilliseconds(100), settings.CompensationRetries);
@@ -86,12 +77,16 @@ namespace WorkflowEngine
                             }))
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
-                                StepExecuting?.Invoke(this, new StepExecutingEventArgs(step));
                                 var startTime = systemClock.UtcNow;
+
+                                // Raise StepExecuting event
+                                (workflow as Workflow).OnStepExecuting(new StepExecutingEventArgs(step));
 
                                 await ExecuteStepWithMiddlewareAsync(step, context, cancellationToken).ConfigureAwait(false);
 
-                                StepExecuted?.Invoke(this, new StepExecutedEventArgs(step, systemClock.UtcNow - startTime));
+                                // Raise StepExecuted event
+                                (workflow as Workflow).OnStepExecuted(new StepExecutedEventArgs(step, systemClock.UtcNow - startTime));
+
                                 lastExecutedStepIndex++;
                             }
                         }
@@ -100,7 +95,18 @@ namespace WorkflowEngine
                     {
                         logger.LogError("Workflow failed!", ex);
                         if (settings.AutoCompensate)
-                            await CompensateAsync(workflow, lastExecutedStepIndex, context, cancellationToken);
+                        {
+                            try
+                            {
+                                await CompensateAsync(workflow, lastExecutedStepIndex, context, cancellationToken);
+                            }
+                            catch (Exception compensationEx)
+                            {
+                                // Raise CompensationFailed event
+                                (workflow as Workflow).OnCompensationFailed(new CompensationFailedEventArgs(workflow.Steps[lastExecutedStepIndex], compensationEx));
+                                throw;
+                            }
+                        }
                         throw new WorkflowException("Workflow failed!", ex);
                     }
                 }
@@ -147,11 +153,11 @@ namespace WorkflowEngine
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         private async Task CompensateAsync(
-            IWorkflow workflow,
-            int lastExecutedStepIndex,
-            IWorkflowContext context,
-            CancellationToken cancellationToken
-        )
+        IWorkflow workflow,
+        int lastExecutedStepIndex,
+        IWorkflowContext context,
+        CancellationToken cancellationToken
+    )
         {
             var compensationManager = context.WorkflowStepCompensationManager;
             var exceptions = new List<Exception>();
@@ -160,8 +166,8 @@ namespace WorkflowEngine
             {
                 var step = workflow.Steps[revertStepIndex];
                 using (_ = logger.BeginScope(new Dictionary<string, object> {
-                        { "RetryStrategy", compensationRetryStrategy.GetType().Name }
-                    }))
+                    { "RetryStrategy", compensationRetryStrategy.GetType().Name }
+                }))
                 {
                     if (compensationManager.IsCompensated(workflow.WorkflowId, step.StepId))
                     {
@@ -182,8 +188,8 @@ namespace WorkflowEngine
                     catch (Exception ex)
                     {
                         exceptions.Add(ex);
-                        CompensationFailed?.Invoke(this, new CompensationFailedEventArgs(step, ex));
                         logger.LogError($"Compensation failed for step: {step.StepId}", ex);
+
                         if (!settings.ContinueOnCompensationFailure)
                         {
                             throw new WorkflowException("Compensation failed", new AggregateException(exceptions));
@@ -196,21 +202,6 @@ namespace WorkflowEngine
             {
                 throw new WorkflowException("One or more compensations failed", new AggregateException(exceptions));
             }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="WorkflowRunner"/> class that is a copy of the current instance.
-        /// </summary>
-        /// <returns>A new instance of the <see cref="WorkflowRunner"/> class.</returns>
-        public object Clone()
-        {
-            return new WorkflowRunner(
-                new List<IWorkflowStepMiddleware>(middleware),
-                settings,
-                logger,
-                compensationRetryStrategy,
-                systemClock
-            );
         }
     }
 }

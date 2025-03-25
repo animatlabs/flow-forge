@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace WorkflowEngine.Core.RetryStrategy
 {
     /// <summary>
-    /// Implements an exponential backoff retry strategy.
+    /// Implements a retry strategy with exponentially increasing intervals between retries.
     /// </summary>
-    public class ExponentialBackoffRetryStrategy : IRetryStrategy
+    public class ExponentialBackoffRetryStrategy : RetryStrategyBase
     {
         private readonly TimeSpan initialInterval;
         private readonly TimeSpan maxInterval;
@@ -19,7 +19,9 @@ namespace WorkflowEngine.Core.RetryStrategy
         /// <param name="initialInterval">The initial interval between retries.</param>
         /// <param name="maxInterval">The maximum interval between retries.</param>
         /// <param name="maxRetryCount">The maximum number of retry attempts.</param>
-        public ExponentialBackoffRetryStrategy(TimeSpan initialInterval, TimeSpan maxInterval, int maxRetryCount)
+        /// <param name="logger">The logger instance, or null for no logging.</param>
+        public ExponentialBackoffRetryStrategy(TimeSpan initialInterval, TimeSpan maxInterval, int maxRetryCount, ILogger logger = null)
+            : base(logger)
         {
             this.initialInterval = initialInterval;
             this.maxInterval = maxInterval;
@@ -27,43 +29,16 @@ namespace WorkflowEngine.Core.RetryStrategy
         }
 
         /// <inheritdoc />
-        public Task<bool> ShouldRetryAsync(int retryCount, CancellationToken cancellationToken)
+        public override Task<bool> ShouldRetryAsync(int retryCount, CancellationToken cancellationToken)
         {
             return Task.FromResult(retryCount < maxRetryCount);
         }
 
         /// <inheritdoc />
-        public TimeSpan GetRetryDelay(int retryCount)
+        public override TimeSpan GetRetryDelay(int retryCount)
         {
             var delay = TimeSpan.FromMilliseconds(initialInterval.TotalMilliseconds * Math.Pow(2, retryCount));
             return delay < maxInterval ? delay : maxInterval;
-        }
-
-        /// <inheritdoc />
-        public async Task ExecuteAsync(Func<Task> value, CancellationToken cancellationToken)
-        {
-            int retryCount = 0;
-
-            while (true)
-            {
-                try
-                {
-                    await value();
-                    return;
-                }
-                catch (Exception)
-                {
-                    retryCount++;
-
-                    if (!await ShouldRetryAsync(retryCount, cancellationToken))
-                    {
-                        throw;
-                    }
-
-                    var delay = GetRetryDelay(retryCount);
-                    await Task.Delay(delay, cancellationToken);
-                }
-            }
         }
     }
 }

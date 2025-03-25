@@ -6,7 +6,7 @@ using WorkflowEngine.Core;
 namespace WorkflowEngine.Steps
 {
     /// <summary>
-    /// A simple action-based step with optional compensation.
+    /// Represents a simple action-based workflow step with optional compensation.
     /// </summary>
     public sealed class ActionStep : WorkflowStep
     {

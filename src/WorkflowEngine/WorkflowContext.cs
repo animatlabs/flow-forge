@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using WorkflowEngine.Core;
 
 namespace WorkflowEngine
 {
     /// <summary>
-    /// Thread-safe context for sharing data between steps
+    /// Represents a thread-safe context for sharing data between workflow steps.
     /// </summary>
     public class WorkflowContext : IWorkflowContext
     {
@@ -15,35 +16,35 @@ namespace WorkflowEngine
         /// Initializes a new instance of the <see cref="WorkflowContext"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider for dependency injection.</param>
-        /// <param name="workflowStepCompensationManager">The workflow step compensation manager.</param>
         /// <param name="workflow">The workflow instance.</param>
         /// <param name="correlationId">The correlation identifier for the workflow context.</param>
+        /// <param name="workflowStepCompensationManager">The workflow step compensation manager.</param>
         public WorkflowContext(
             IServiceProvider serviceProvider,
-            IWorkflowStepCompensationManager workflowStepCompensationManager,
             IWorkflow workflow,
-            string correlationId = null)
+            string correlationId = null,
+            IWorkflowStepCompensationManager workflowStepCompensationManager = null)
         {
-            CorrelationId = correlationId ?? Guid.NewGuid().ToString();
-            data = new ConcurrentDictionary<string, object>();
-            ServiceProvider = serviceProvider;
-            WorkflowStepCompensationManager = workflowStepCompensationManager;
             Workflow = workflow;
+            ServiceProvider = serviceProvider;
+            data = new ConcurrentDictionary<string, object>();
+            CorrelationId = correlationId ?? Guid.NewGuid().ToString();
+            WorkflowStepCompensationManager = workflowStepCompensationManager ?? new WorkflowStepCompensationManager();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public string CorrelationId { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IServiceProvider ServiceProvider { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IWorkflowStepCompensationManager WorkflowStepCompensationManager { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IWorkflow Workflow { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public TValue GetValue<TValue>(string key)
         {
             if (data.TryGetValue(key, out var value))
@@ -53,11 +54,15 @@ namespace WorkflowEngine
             throw new KeyNotFoundException($"The key '{key}' was not found in the context.");
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public TValue GetValueOrDefault<TValue>(string key) => data.TryGetValue(key, out var value) ? (TValue)value : default;
 
-        /// <inheritdoc />
-        public void SetValue<TValue>(string key, Func<TValue, TValue> value) =>
+        /// <inheritdoc/>
+        public void SetValue<TValue>(string key, Func<TValue, TValue> value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Key cannot be null or empty.", nameof(key));
             data.AddOrUpdate(key, k => value(default), (k, v) => value((TValue)v));
+        }
     }
 }

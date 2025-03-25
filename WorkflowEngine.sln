@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{13794D12
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{85F25AF7-DE89-4278-B3DF-CEB81125013E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowEngine", "src\WorklfowEngine\WorkflowEngine.csproj", "{AC0738EA-62DD-711E-4BCC-B70898EB49BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowEngine", "src\WorkflowEngine\WorkflowEngine.csproj", "{AC0738EA-62DD-711E-4BCC-B70898EB49BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowEngine.Samples", "samples\WorkflowEngine.Samples\WorkflowEngine.Samples.csproj", "{47908FB6-8B4B-E3CE-1B26-CC2687E331CC}"
 EndProject

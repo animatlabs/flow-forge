@@ -8,7 +8,7 @@
 
         <AssemblyTitle>Workflow Engine Open Telemetry Middleware</AssemblyTitle>  
         <AssemblyName>WorkflowEngine.Middlewares.OpenTelemetry</AssemblyName>  
-        <AssemblyVersion>1.0.0</AssemblyVersion>  
+        <AssemblyVersion>0.0.1</AssemblyVersion>  
         <Authors>Animesh Agarwal</Authors>  
         <Copyright>© 2023 AnimatLabs. All rights reserved.</Copyright>  
         <Description>Workflow Engine Open Telemetry Middleware is a .NET library for integrating Open Telemetry into the workflow engine.</Description>  
@@ -25,6 +25,6 @@
     </ItemGroup>  
 
     <ItemGroup>  
-        <ProjectReference Include="..\WorklfowEngine\WorkflowEngine.csproj" />  
+        <ProjectReference Include="..\WorkflowEngine\WorkflowEngine.csproj" />  
     </ItemGroup>  
 </Project>
