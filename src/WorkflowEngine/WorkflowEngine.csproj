@@ -8,7 +8,7 @@
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\WorkflowEngine.xml</DocumentationFile>
 
         <Authors>Animesh Agarwal</Authors>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
         <AssemblyName>WorkflowEngine</AssemblyName>
         <AssemblyTitle>Workflow Engine</AssemblyTitle>
         <Copyright>© 2023 AnimatLabs. All rights reserved.</Copyright>
