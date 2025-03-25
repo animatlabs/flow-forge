@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Assembly Information -->
+        <AssemblyName>WorkflowEngine.Logger.Serilog</AssemblyName>
+        <AssemblyTitle>Workflow Engine Serilog Logger</AssemblyTitle>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <Authors>Animesh Agarwal</Authors>
+        <Copyright>© 2023 AnimatLabs</Copyright>
+
+        <!-- Project Metadata -->
+        <Description>Workflow Engine Serilog Logger is a .NET library for integrating Serilog into the workflow engine.</Description>
+        <PackageTags>serilog, logger, workflow engine, .NET Standard, .NET library, logging, integration, automation</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/animatlabs/workflow-engine</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/animatlabs/workflow-engine</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIconUrl>https://github.com/animatlabs/animatlabs.github.io/blob/main/assets/images/logo_300x300.png</PackageIconUrl>
+
+        <!-- Build Configuration -->
+        <IsPackable>true</IsPackable>
+        <LangVersion>7.3</LangVersion>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\WorkflowEngine\WorkflowEngine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="4.2.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    </ItemGroup>
+</Project>

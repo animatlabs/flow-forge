@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Assembly Information -->
+        <AssemblyTitle>Workflow Engine Open Telemetry Middleware</AssemblyTitle>
+        <AssemblyName>WorkflowEngine.Middlewares.OpenTelemetry</AssemblyName>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <Authors>Animesh Agarwal</Authors>
+        <Copyright>© 2023 AnimatLabs</Copyright>
+
+        <!-- Project Metadata -->
+        <Description>Workflow Engine Open Telemetry Middleware is a .NET library for integrating Open Telemetry into the workflow engine.</Description>
+        <PackageTags>opentelemetry, telemetry, logger, workflow, automation, integration, business process management, BPM, .NET, library, workflow automation, process automation, workflow engine, business automation, .NET Standard, .NET library</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/animatlabs/workflow-engine</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/animatlabs/workflow-engine</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIconUrl>https://github.com/animatlabs/animatlabs.github.io/blob/main/assets/images/logo_300x300.png</PackageIconUrl>
+
+        <!-- Build Configuration -->
+        <IsPackable>true</IsPackable>
+        <LangVersion>7.3</LangVersion>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="OpenTelemetry" Version="1.11.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\WorkflowEngine\WorkflowEngine.csproj" />
+    </ItemGroup>
+</Project>

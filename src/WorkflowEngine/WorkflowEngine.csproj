@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Assembly Information -->
+        <AssemblyName>WorkflowEngine</AssemblyName>
+        <AssemblyTitle>Workflow Engine</AssemblyTitle>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <Authors>Animesh Agarwal</Authors>
+        <Copyright>© 2023 AnimatLabs</Copyright>
+
+        <!-- Project Metadata -->
+        <Description>
+            Workflow Engine is a .NET library for creating and executing workflows. It provides a flexible and extensible framework for defining, managing, and executing complex workflows in .NET applications.
+        </Description>
+        <PackageTags>workflow, automation, .NET library</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/animatlabs/workflow-engine</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/animatlabs/workflow-engine</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIconUrl>https://github.com/animatlabs/animatlabs.github.io/blob/main/assets/images/logo_300x300.png</PackageIconUrl>
+
+        <!-- Build Configuration -->
+        <IsPackable>true</IsPackable>
+        <LangVersion>7.3</LangVersion>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\WorkflowEngine.xml</DocumentationFile>
+    </PropertyGroup>
+</Project>
