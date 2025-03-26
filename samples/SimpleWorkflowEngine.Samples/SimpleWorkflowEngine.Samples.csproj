@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\SimpleWorkflowEngine.Logger.Serilog\SimpleWorkflowEngine.Logger.Serilog.csproj" />
+        <ProjectReference Include="..\..\src\SimpleWorkflowEngine\SimpleWorkflowEngine.csproj" />
+    </ItemGroup>
+
+</Project>
