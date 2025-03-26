@@ -15,7 +15,7 @@ public class NestedWorkflow
             .Build();
 
         // Create a runner
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
 
         // Define a parent workflow with a NestedWorkflowStep
         var nestedWorkflowStep = new NestedWorkflowStep(nestedWorkflow, runner);

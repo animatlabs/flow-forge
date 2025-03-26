@@ -27,20 +27,20 @@ namespace SimpleWorkflowEngine
             Name = GetType().Name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Guid StepId { get; } = Guid.NewGuid();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual async Task ExecuteAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             await ExecuteCoreAsync(context, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual async Task CompensateAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -63,7 +63,7 @@ namespace SimpleWorkflowEngine
         /// <returns>A task that represents the asynchronous operation.</returns>
         protected abstract Task CompensateCoreAsync(IWorkflowContext context, CancellationToken cancellationToken);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (isDisposed) return; // Prevent multiple or cyclic disposal
@@ -74,11 +74,14 @@ namespace SimpleWorkflowEngine
         }
 
         /// <summary>
-        /// Disposes resources used by the workflow step.
+        /// Releases resources specific to derived classes.
         /// </summary>
+        /// <remarks>
+        /// Override this method in derived classes to release additional resources.
+        /// </remarks>
         protected virtual void DisposeCore()
         {
-            // Override in derived classes if needed
+            // Default implementation does nothing.
         }
     }
 }

@@ -6,6 +6,10 @@ namespace SimpleWorkflowEngine
     /// <summary>
     /// Provides a fluent API for building workflows.
     /// </summary>
+    /// <remarks>
+    /// This class simplifies the creation of workflows by providing a fluent interface for configuring
+    /// workflow properties and adding steps.
+    /// </remarks>
     public class WorkflowBuilder
     {
         private Guid id;
@@ -57,11 +61,7 @@ namespace SimpleWorkflowEngine
             return this;
         }
 
-        /// <summary>
-        /// Builds the workflow with the configured steps.
-        /// </summary>
-        /// <returns>A new instance of the <see cref="Workflow"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when no steps have been added to the builder.</exception>
+        /// <inheritdoc />
         public IWorkflow Build()
         {
             if (steps.Count == 0)

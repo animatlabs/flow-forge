@@ -11,7 +11,7 @@ namespace SimpleWorkflowEngine.Steps
     public sealed class NestedWorkflowStep : WorkflowStep
     {
         private readonly IWorkflow nestedWorkflow;
-        private readonly WorkflowEngine workflowRunner;
+        private readonly WorkflowRunner workflowRunner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NestedWorkflowStep"/> class.
@@ -21,7 +21,7 @@ namespace SimpleWorkflowEngine.Steps
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="nestedWorkflow"/> or <paramref name="workflowRunner"/> is null.
         /// </exception>
-        public NestedWorkflowStep(IWorkflow nestedWorkflow, WorkflowEngine workflowRunner)
+        public NestedWorkflowStep(IWorkflow nestedWorkflow, WorkflowRunner workflowRunner)
 
         {
             this.nestedWorkflow = nestedWorkflow ?? throw new ArgumentNullException(nameof(nestedWorkflow));

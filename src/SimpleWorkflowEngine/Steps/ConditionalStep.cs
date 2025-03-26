@@ -20,11 +20,16 @@ namespace SimpleWorkflowEngine.Steps
         /// <summary>
         /// Initializes a new instance of the <see cref="ConditionalStep"/> class.
         /// </summary>
-        /// <param name="condition">The condition to evaluate.</param>
-        /// <param name="trueStep">The step to execute if the condition is true.</param>
-        /// <param name="falseStep">The step to execute if the condition is false.</param>
-        /// <param name="logger">The logger instance to use for logging.</param>
-        /// <exception cref="ArgumentNullException">Thrown when any of the parameters are null.</exception>
+        /// <param name="condition">
+        /// The condition to evaluate. If it returns <c>true</c>, the <paramref name="trueStep"/> is executed;
+        /// otherwise, the <paramref name="falseStep"/> is executed.
+        /// </param>
+        /// <param name="trueStep">The step to execute if the condition is true. Cannot be null.</param>
+        /// <param name="falseStep">The step to execute if the condition is false. Cannot be null.</param>
+        /// <param name="logger">The logger instance to use for logging (optional).</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="condition"/>, <paramref name="trueStep"/>, or <paramref name="falseStep"/> is null.
+        /// </exception>
         public ConditionalStep(Func<IWorkflowContext, bool> condition, IWorkflowStep trueStep, IWorkflowStep falseStep, ILogger logger = null)
             : base(logger)
         {
@@ -33,7 +38,7 @@ namespace SimpleWorkflowEngine.Steps
             this.falseStep = falseStep ?? throw new ArgumentNullException(nameof(falseStep));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override async Task ExecuteCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             step = condition(context) ? trueStep : falseStep;
@@ -49,7 +54,7 @@ namespace SimpleWorkflowEngine.Steps
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override async Task CompensateCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             if (step != null)
@@ -66,7 +71,7 @@ namespace SimpleWorkflowEngine.Steps
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DisposeCore()
         {
             trueStep.Dispose();

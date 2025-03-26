@@ -2,8 +2,8 @@
     <PropertyGroup>
         <!-- Assembly Information -->
         <AssemblyTitle>Simple Workflow Engine Open Telemetry Middleware</AssemblyTitle>
-        <AssemblyName>Simple.WorkflowEngine.Middlewares.OpenTelemetry</AssemblyName>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <AssemblyName>SimpleWorkflowEngine.Middlewares.OpenTelemetry</AssemblyName>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
         <Authors>Animesh Agarwal</Authors>
         <Copyright>© 2023 AnimatLabs</Copyright>
 

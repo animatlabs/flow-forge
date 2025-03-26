@@ -21,7 +21,7 @@ public class ConditionalWorkflow
             .Build();
 
         // Create a runner
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
 
         // Execute the workflow
         await runner.ExecuteAsync(workflow, new WorkflowContext(workflow));

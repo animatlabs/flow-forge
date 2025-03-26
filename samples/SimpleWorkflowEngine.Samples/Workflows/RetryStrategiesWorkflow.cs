@@ -59,7 +59,7 @@ public class RetryStrategiesWorkflow
             .Build();
 
         // Create a runner
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
 
         // Execute the workflow
         try

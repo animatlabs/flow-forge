@@ -22,7 +22,7 @@ public class MiddlewareWorkflow
         var loggingMiddleware = new LoggingMiddleware();
 
         // Create a runner
-        var runner = new WorkflowEngine([loggingMiddleware], new WorkflowSettings());
+        var runner = new WorkflowRunner([loggingMiddleware], new WorkflowSettings());
 
         // Execute the workflow
         await runner.ExecuteAsync(workflow, new WorkflowContext(workflow));

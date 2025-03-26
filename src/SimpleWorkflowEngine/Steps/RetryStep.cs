@@ -18,12 +18,18 @@ namespace SimpleWorkflowEngine.Steps
         /// <summary>
         /// Initializes a new instance of the <see cref="RetryStep"/> class.
         /// </summary>
-        /// <param name="step">The workflow step to be retried.</param>
-        /// <param name="maxRetries">The maximum number of retries.</param>
-        /// <param name="retryStrategy">The strategy to determine if a retry should be attempted.</param>
-        /// <param name="logger">The logger instance to use for logging.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="step"/> or <paramref name="retryStrategy"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="maxRetries"/> is less than 0.</exception>
+        /// <param name="step">The workflow step to be retried. Cannot be null.</param>
+        /// <param name="maxRetries">
+        /// The maximum number of retries. Must be greater than or equal to 0.
+        /// </param>
+        /// <param name="retryStrategy">The strategy to determine if a retry should be attempted. Cannot be null.</param>
+        /// <param name="logger">The logger instance to use for logging (optional).</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="step"/> or <paramref name="retryStrategy"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="maxRetries"/> is less than 0.
+        /// </exception>
         public RetryStep(IWorkflowStep step, int maxRetries, IRetryStrategy retryStrategy, ILogger logger)
             : base(logger)
         {
@@ -32,13 +38,7 @@ namespace SimpleWorkflowEngine.Steps
             this.retryStrategy = retryStrategy ?? throw new ArgumentNullException(nameof(retryStrategy));
         }
 
-        /// <inheritdoc/>
-        /// <summary>
-        /// Executes the workflow step with retry logic.
-        /// </summary>
-        /// <param name="context">The workflow context.</param>
-        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-        /// <exception cref="InvalidOperationException">Thrown when the step fails after the maximum retries.</exception>
+        /// <inheritdoc />
         protected override async Task ExecuteCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             for (int retryCount = 0; retryCount < maxRetries; retryCount++)
@@ -70,12 +70,7 @@ namespace SimpleWorkflowEngine.Steps
             throw new InvalidOperationException($"Step failed after {maxRetries} retries.");
         }
 
-        /// <inheritdoc/>
-        /// <summary>
-        /// Compensates for the actions of the workflow step.
-        /// </summary>
-        /// <param name="context">The workflow context.</param>
-        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <inheritdoc />
         protected override async Task CompensateCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             using (_ = logger.BeginScope(new Dictionary<string, object> {
@@ -89,7 +84,7 @@ namespace SimpleWorkflowEngine.Steps
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DisposeCore()
         {
             step.Dispose();

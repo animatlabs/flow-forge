@@ -28,7 +28,7 @@ public class EventHandlersWorkflow
         workflow.StepExecuted += (sender, args) => Console.WriteLine($"Executed step: {args.Step.Name}");
 
         // Create runner
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
 
         // Execute workflow
         await runner.ExecuteAsync(workflow, new WorkflowContext(workflow));

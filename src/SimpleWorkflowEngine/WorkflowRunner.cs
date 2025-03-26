@@ -10,9 +10,14 @@ using SimpleWorkflowEngine.Exceptions;
 namespace SimpleWorkflowEngine
 {
     /// <summary>
-    /// Executes workflows with compensation, middleware, and throttling
+    /// Executes workflows with compensation, middleware, and throttling.
     /// </summary>
-    public sealed class WorkflowEngine : IDisposable
+    /// <remarks>
+    /// This class is responsible for managing the execution of workflows, including handling middleware,
+    /// compensations, and concurrency limits. It ensures that workflows are executed in a controlled
+    /// and reliable manner.
+    /// </remarks>
+    public sealed class WorkflowRunner : IDisposable
     {
         private readonly IEnumerable<IWorkflowStepMiddleware> middleware;
         private readonly WorkflowSettings settings;
@@ -23,14 +28,14 @@ namespace SimpleWorkflowEngine
         private bool isDisposed; // Safeguard against cyclic disposal
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowEngine"/> class
+        /// Initializes a new instance of the <see cref="WorkflowRunner"/> class
         /// </summary>
         /// <param name="middleware">The middleware to be applied to the workflow steps.</param>
         /// <param name="settings">The settings for the workflow execution (optional).</param>
         /// <param name="logger">The logger for logging workflow execution details (optional).</param>
         /// <param name="compensationRetryStrategy">The retry strategy for compensations (optional).</param>
         /// <param name="systemClock">The system clock for getting the current time (optional).</param>
-        public WorkflowEngine(
+        public WorkflowRunner(
             IEnumerable<IWorkflowStepMiddleware> middleware,
             WorkflowSettings settings = null,
             ILogger logger = null,
@@ -46,14 +51,7 @@ namespace SimpleWorkflowEngine
             semaphore = new SemaphoreSlim(this.settings.MaxConcurrentWorkflows);
         }
 
-        /// <summary>
-        /// Executes the workflow
-        /// </summary>
-        /// <param name="workflow">The workflow to be executed.</param>
-        /// <param name="context">The workflow context containing shared data and services.</param>
-        /// <param name="cancellationToken">A token to monitor for cancellation requests (optional).</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        /// <exception cref="WorkflowException">Thrown when an error occurs during workflow execution.</exception>
+        /// <inheritdoc />
         public async Task ExecuteAsync(IWorkflow workflow, IWorkflowContext context, CancellationToken cancellationToken = default)
         {
             await semaphore.WaitAsync(cancellationToken); // Acquire the semaphore
@@ -120,12 +118,16 @@ namespace SimpleWorkflowEngine
         }
 
         /// <summary>
-        /// Executes a workflow step with middleware
+        /// Executes a workflow step with middleware.
         /// </summary>
         /// <param name="step">The workflow step to be executed.</param>
         /// <param name="context">The workflow context containing shared data and services.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <remarks>
+        /// Middleware is applied in the order it is provided. Each middleware can modify the behavior
+        /// of the step execution or add additional logic.
+        /// </remarks>
         private async Task ExecuteStepWithMiddlewareAsync(
             IWorkflowStep step,
             IWorkflowContext context,
@@ -147,13 +149,17 @@ namespace SimpleWorkflowEngine
         }
 
         /// <summary>
-        /// Compensates the executed steps in case of failure
+        /// Compensates the executed steps in case of failure.
         /// </summary>
         /// <param name="workflow">The workflow instance.</param>
         /// <param name="lastExecutedStepIndex">The index of the last successfully executed step.</param>
         /// <param name="context">The workflow context containing shared data and services.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <remarks>
+        /// Compensation is performed in reverse order of execution. If a compensation step fails,
+        /// the process continues or stops based on the workflow settings.
+        /// </remarks>
         private async Task CompensateAsync(
         IWorkflow workflow,
         int lastExecutedStepIndex,
@@ -206,8 +212,7 @@ namespace SimpleWorkflowEngine
             }
         }
 
-        /// <inheritdoc/>
-
+        /// <inheritdoc />
         public void Dispose()
         {
             if (isDisposed) return; // Prevent multiple or cyclic disposal

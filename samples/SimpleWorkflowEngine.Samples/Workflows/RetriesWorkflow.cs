@@ -25,7 +25,7 @@ public class WorkflowWithRetries
         var retryMiddleware = new RetryMiddleware(maxRetries: 3, delay: TimeSpan.FromSeconds(1));
 
         // Create a runner
-        var runner = new WorkflowEngine([retryMiddleware], new WorkflowSettings());
+        var runner = new WorkflowRunner([retryMiddleware], new WorkflowSettings());
 
         // Execute the workflow
         try

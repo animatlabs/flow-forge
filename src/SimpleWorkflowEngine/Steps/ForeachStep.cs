@@ -35,13 +35,16 @@ namespace SimpleWorkflowEngine.Steps
         }
 
         /// <summary>
-        /// Adds a workflow step to be executed.
+        /// Adds a workflow step to be executed in parallel.
         /// </summary>
-        /// <param name="step">The workflow step to add.</param>
+        /// <param name="step">The workflow step to add. Cannot be null.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="step"/> is null.</exception>
+        /// <remarks>
+        /// The added step will be executed concurrently with other steps in this <see cref="ForeachStep"/>.
+        /// </remarks>
         public void AddStep(IWorkflowStep step) => parallelSteps.Add(step ?? throw new ArgumentNullException(nameof(step)));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override async Task ExecuteCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             var tasks = parallelSteps.Select(async step =>
@@ -74,7 +77,7 @@ namespace SimpleWorkflowEngine.Steps
             await Task.WhenAll(tasks);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override async Task CompensateCoreAsync(IWorkflowContext context, CancellationToken cancellationToken)
         {
             var tasks = parallelSteps.Select(async step =>
@@ -107,7 +110,7 @@ namespace SimpleWorkflowEngine.Steps
             await Task.WhenAll(tasks);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DisposeCore()
         {
             foreach (var step in parallelSteps.ToArray()) // Ensure thread safety

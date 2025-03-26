@@ -3,7 +3,7 @@
         <!-- Assembly Information -->
         <AssemblyName>SimpleWorkflowEngine.Logger.Serilog</AssemblyName>
         <AssemblyTitle>Simple Workflow Engine Serilog Logger</AssemblyTitle>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
         <Authors>Animesh Agarwal</Authors>
         <Copyright>© 2023 AnimatLabs</Copyright>
 

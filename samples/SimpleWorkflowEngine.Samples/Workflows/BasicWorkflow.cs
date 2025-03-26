@@ -16,7 +16,7 @@ public class BasicWorkflow
             .AddStep(step2)
             .Build();
 
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
         await runner.ExecuteAsync(workflow, new WorkflowContext(workflow));
     }
 }

@@ -21,7 +21,7 @@ public class ParallelWorkflow
             .AddStep(foreachStep)
             .Build();
 
-        var runner = new WorkflowEngine([], new WorkflowSettings());
+        var runner = new WorkflowRunner([], new WorkflowSettings());
 
         await runner.ExecuteAsync(workflow, new WorkflowContext(workflow));
     }

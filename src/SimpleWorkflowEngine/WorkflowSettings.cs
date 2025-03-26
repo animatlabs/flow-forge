@@ -5,6 +5,10 @@ namespace SimpleWorkflowEngine
     /// <summary>
     /// Configuration settings for the workflow engine.
     /// </summary>
+    /// <remarks>
+    /// These settings control the behavior of the workflow engine, including compensation retries,
+    /// concurrency limits, and error handling strategies.
+    /// </remarks>
     public sealed class WorkflowSettings
     {
         private const int minAllowedCompensationRetries = 1;
@@ -17,8 +21,12 @@ namespace SimpleWorkflowEngine
         /// </summary>
         /// <param name="autoCompensate">Indicates whether the workflow engine should automatically compensate on failure.</param>
         /// <param name="continueOnCompensationFailure">Indicates whether the workflow engine should continue on compensation failure.</param>
-        /// <param name="compensationRetries">The number of retries for compensation.</param>
-        /// <param name="maxConcurrentWorkflows">The maximum number of concurrent workflows.</param>
+        /// <param name="compensationRetries">
+        /// The number of retries for compensation. Must be between 1 and 100.
+        /// </param>
+        /// <param name="maxConcurrentWorkflows">
+        /// The maximum number of concurrent workflows. Must be between 1 and 1000.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="compensationRetries"/> or <paramref name="maxConcurrentWorkflows"/> is out of range.
         /// </exception>
@@ -44,24 +52,16 @@ namespace SimpleWorkflowEngine
             MaxConcurrentWorkflows = maxConcurrentWorkflows;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the workflow engine should automatically compensate on failure.
-        /// </summary>
+        /// <inheritdoc />
         public bool AutoCompensate { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the workflow engine should continue execution on compensation failure.
-        /// </summary>
+        /// <inheritdoc />
         public bool ContinueOnCompensationFailure { get; }
 
-        /// <summary>
-        /// Gets the number of retries for compensation.
-        /// </summary>
+        /// <inheritdoc />
         public int CompensationRetries { get; }
 
-        /// <summary>
-        /// Gets the maximum number of workflows that can run concurrently.
-        /// </summary>
+        /// <inheritdoc />
         public int MaxConcurrentWorkflows { get; }
     }
 }
